@@ -1,0 +1,144 @@
+.modal, .modal__delete, .modal__add{
+    scale: 0;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    top: 0;
+    left: 0;
+}
+.modal.active, .modal__delete.active, .modal__add.active {
+    scale: 1;
+}
+.modal__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 40vw;
+    height: 70vh;
+    padding: 40px;
+    border: 2px solid black;
+    border-radius: 20px 0;
+    background-color: white;
+    button {
+        margin-top: 20px;
+        border: 1px solid black;
+        &:hover {
+            background-color: green;
+            color: white;
+            border-color: green;
+        }
+    }
+    input {
+        border: 1px solid gray;
+        &:not(:first-child) {
+            margin-top: 10px;
+        }
+    }
+    img {
+        height: 40px;
+        width: 40px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        &:hover {
+            filter: invert(50%);
+        }   
+    }
+}
+.modal__delete_content {
+    position: relative;
+    display: grid;
+    text-align: center;
+    align-items: center;
+    grid-template-areas: 
+    "A A"
+    "B C"
+    "B C";
+    width: 40vw;
+    height: 40vh;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 20px 0;
+    background-color: white;
+    p {
+        grid-area: A;
+    }
+    button {
+        border: 1px solid black;
+        margin: 0 20px;
+    }
+    #firstbtn {
+        grid-area: B;
+        &:hover {
+            background-color: red;
+            color: white;
+        }
+    }
+    #secondbtn {
+        grid-area: C;
+        &:hover {
+            background-color: green;
+            color: white;
+        }
+    }
+}
+.modal__add_content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 40vw;
+    height: 70vh;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 20px 0;
+    background-color: white;
+    .add__item {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 1fr 2fr;
+        ul {
+            li {
+                border: 1px solid white;
+                margin-bottom: 10px;
+            }
+        }
+        form {
+            position: relative;
+            input {
+                width: 90%;
+                border: 1px solid gray;
+                margin-bottom: 10px;
+            }
+        } 
+    }
+    button {
+        position: absolute;
+        width: 30%;
+        top: 110%;
+        left: 30%;
+        border: 1px solid black;
+        &:hover {
+            background-color: green;
+            color: white;
+            border-color: green;
+        }
+    }
+    img {
+        height: 40px;
+        width: 40px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        &:hover {
+            filter: invert(50%);
+        }   
+    }
+}
