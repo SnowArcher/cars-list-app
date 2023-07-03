@@ -2,6 +2,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import { useState , useEffect} from 'react';
 import axios from 'axios';
 
+function useUpdateCars(formData) {
+    const dispatch = useDispatch();
+    const cars = useSelector(state => state.filtredCars);
+    const updateCars = () => {
+        const updatedCars = cars.map(car => {
+            if (car.id === formData.id) {
+              return formData;
+            }
+            return car;
+          });
+        dispatch({ type: 'FILTERED_CARS', filter: updatedCars });
+    };
+    return updateCars;
+}
+
 export default function ModalEdit({active, src}) {
     const dispatch = useDispatch()
     const modalContent = useSelector(state => state.modalContent)
@@ -28,12 +43,12 @@ export default function ModalEdit({active, src}) {
           availability: modalContent.availability,
         });
       }, [modalContent]);
-    console.log(formData)
-    const updateModal = (name, value) => {
+    const updateCars = useUpdateCars(formData);
+    const updateModalEdit = (name, value) => {
         dispatch({type: "CHANGE_CAR", change: {...modalContent, [name]: value}})
     }
-    const closeModal = () => {
-        dispatch({type:"OPEN_MODAL", open: false})
+    const closeModalEdit = () => {
+        dispatch({type:"MODAL_EDIT", edit: false})
     }
     const handleInputChange = (e) => {
         let value = e.target.value
@@ -41,17 +56,18 @@ export default function ModalEdit({active, src}) {
         if (name === 'availability') {
             value = value === 'true'? true : false
         }
-        updateModal(name, value)
+        updateModalEdit(name, value)
     }
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         try {
             const response = await axios.post(src + '/change', formData);
+            updateCars(formData)
             console.log(response.data);
         } catch (error) {
         console.error(error);
         }
-        closeModal()
+        closeModalEdit()
         
     }
     return (
@@ -100,7 +116,7 @@ export default function ModalEdit({active, src}) {
                     onChange={handleInputChange}
                 />
                 <button type="submit">Change</button>
-                <img src="../img/cross.svg" alt="cross" onClick={() => {closeModal()}}/>
+                <img src="../img/cross.svg" alt="cross" onClick={() => {closeModalEdit()}}/>
             </form>
         </div>
     )

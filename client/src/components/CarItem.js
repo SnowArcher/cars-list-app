@@ -17,11 +17,11 @@ export default function CarItem({id, company, model, vin, color, year, price, av
             availability: availability,
         }})
     }
-    const openModal = () => {
-        dispatch({type:"OPEN_MODAL", open: true})
+    const openModalEdit = () => {
+        dispatch({type:"MODAL_EDIT", edit: true})
     }
-    const openDelete = (id) => {
-        dispatch({type:"OPEN_MODAL_DELETE", openDelete: true})
+    const openModalDelete = (id) => {
+        dispatch({type:"MODAL_DELETE", delete: true})
         dispatch({type:"DELETE_ID", id: id})
     }
     useEffect(() => {
@@ -52,12 +52,12 @@ export default function CarItem({id, company, model, vin, color, year, price, av
                     <li onClick={(e) => {
                         e.stopPropagation();
                         changeCar(id, company, model, vin, color, year, price, availability);
-                        openModal();
+                        openModalEdit();
                         setOpen(!open);
                     }}>Edit</li>
                     <li onClick={(e) => {
                         e.stopPropagation();
-                        openDelete(id);
+                        openModalDelete(id);
                         setOpen(!open);
                     }}>Delete</li>
                 </ul>

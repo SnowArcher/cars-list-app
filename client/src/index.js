@@ -6,17 +6,19 @@ import {createStore} from 'redux';
 import { Provider } from 'react-redux';
 
 const defaultState = {
-  modal: false,
-  delete: false,
+  query: '',
+  modalEdit: false,
+  modalDelete: false,
   deleteId: null,
-  addCar: false,
-  filtredCars: [], 
+  modalAdd: false,
+  cars: [],
+  filtredCars: [],
   modalContent: {
-    id: "",
+    id: null,
     car: "NOT FOUND",
     car_model: "",
     car_color: "",
-    car_model_year: 0,
+    car_model_year: null,
     car_vin: "",
     price: "$0",
     availability: false
@@ -24,16 +26,20 @@ const defaultState = {
 }
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    case "OPEN_MODAL":
-      return {...state, modal: action.open}
-    case "OPEN_MODAL_DELETE":
-      return {...state, delete: action.openDelete}
+    case "MODAL_EDIT":
+      return {...state, modalEdit: action.edit}
+    case "MODAL_DELETE":
+      return {...state, modalDelete: action.delete}
     case "DELETE_ID":
       return {...state, deleteId: action.id}
-    case "OPEN_MODAL_ADD":
-      return {...state, addCar: action.openAdd}
-    case "SEARCH_CAR":
-      return {...state, filtredCars: action.search}
+    case "MODAL_ADD":
+      return {...state, modalAdd: action.add}
+    case "ALL_CARS":
+      return {...state, cars: action.setAll}
+    case "SEARCH_CARS":
+      return {...state, query: action.search}
+    case "FILTERED_CARS":
+      return {...state, filtredCars: action.filter}
     case "CHANGE_CAR":
       return {...state, modalContent: action.change}
     default: 

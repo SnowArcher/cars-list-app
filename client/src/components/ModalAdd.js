@@ -1,20 +1,20 @@
-import { useDispatch } from "react-redux"
-import { useState } from "react";
+import { useDispatch, useSelector} from "react-redux"
+import { useState, useEffect} from "react";
 import axios from 'axios'
 
-export default function ModalAdd({active, src}) {
+export default function ModalAdd({active, src, update}) {
     const dispatch = useDispatch()
     const [formData, setFormData] = useState({
         car: "",
         car_model: "",
         car_color: "",
-        car_model_year: 0,
+        car_model_year: null,
         car_vin: "",
-        price: "$0",
+        price: "",
         availability: false,
     });
-    const closeModal = () => {
-        dispatch({type:"OPEN_MODAL_ADD", openAdd: false})
+    const closeModalAdd = () => {
+        dispatch({type:"MODAL_ADD", add: false})
     }
     const handleInputChange = (e) => {
         setFormData({
@@ -22,6 +22,15 @@ export default function ModalAdd({active, src}) {
           [e.target.name]: e.target.value,
         });
       };
+    const cars = useSelector(state => state.cars)
+    useEffect(() => {
+        axios.get(src).then(data => {
+            dispatch({type: 'ALL_CARS', setAll: data.data})
+        }).catch(error => {
+          console.log(error);
+        });
+        update(cars)
+    }, [dispatch, cars, update, src])
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -30,7 +39,7 @@ export default function ModalAdd({active, src}) {
         } catch (error) {
             console.error(error);
         }
-        closeModal()
+        closeModalAdd()
     }
     return (
         <div className={`modal__add ${active? 'active': ''}`}>
@@ -91,7 +100,7 @@ export default function ModalAdd({active, src}) {
                         <button type="submit">Add Car</button>
                     </form>
                 </div>
-                <img src="../img/cross.svg" alt="cross" onClick={() => {closeModal()}}/>
+                <img src="../img/cross.svg" alt="cross" onClick={() => {closeModalAdd()}}/>
             </div>
         </div>
     )

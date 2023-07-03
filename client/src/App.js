@@ -1,7 +1,7 @@
 import './App.css';
 import axios from 'axios';
 import {useState, useEffect} from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
 import SearchBar from './components/SearchBar';
 import CarItem from './components/CarItem';
 import Pagination from './components/Pagination';
@@ -11,23 +11,25 @@ import ModalAdd from './components/ModalAdd';
 
 function App() {
   const src = 'http://localhost:5000/api/cars'
-  const [cars, setCars] = useState([])
+  const cars = useSelector(state => state.cars)
   const [currentPage, setCurrentPage] = useState(1)
   const postsPerPage = 6
   const lastPostIndex = currentPage * postsPerPage
   const firstPostIndex = lastPostIndex - postsPerPage
-  const modal = useSelector(state => state.modal)
-  const modalDelete = useSelector(state => state.delete)
-  const modalAdd =useSelector(state => state.addCar)
-  const searchRes = useSelector(state => state.filtredCars)
+  const modalEdit = useSelector(state => state.modalEdit)
+  const modalDelete = useSelector(state => state.modalDelete)
+  const modalAdd =useSelector(state => state.modalAdd)
+  const filtredCars = useSelector(state => state.filtredCars)
+  const [renderedCars, setRender] = useState([])
+  const dispatch = useDispatch()
   useEffect(() => {
       axios.get(src).then(data => {
-          setCars(data.data)
+          dispatch({type: 'ALL_CARS', setAll: data.data})
       }).catch(error => {
         console.log(error);
       });
-  }, [])
-  const filtredCars = searchRes.length !== 0? searchRes.slice(firstPostIndex, lastPostIndex) : cars.slice(firstPostIndex, lastPostIndex)
+      setRender(filtredCars.length !== 0? filtredCars.slice(firstPostIndex, lastPostIndex) : cars.slice(firstPostIndex, lastPostIndex))
+  }, [dispatch, cars, filtredCars, firstPostIndex, lastPostIndex])
   return (<>
       <SearchBar 
         cars={cars}
@@ -35,7 +37,7 @@ function App() {
       />
       <div className='cars-list'>
         {
-          filtredCars.map(item => 
+          renderedCars.map(item => 
             (
               <CarItem key={item.id}
               id={item.id} 
@@ -52,7 +54,7 @@ function App() {
         }
       </div>
       <ModalEdit 
-        active={modal}
+        active={modalEdit}
         src={src}/>
       <DeleteModal 
         active={modalDelete}
@@ -60,9 +62,10 @@ function App() {
         />
       <ModalAdd 
         active={modalAdd}
+        update={setRender}
         src={src}/>
       <Pagination 
-        totalPosts={searchRes.length > 0? searchRes.length : cars.length} 
+        totalPosts={filtredCars.length > 0? filtredCars.length : cars.length} 
         postsPerPage={postsPerPage}
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

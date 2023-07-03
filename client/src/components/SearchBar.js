@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function SearchBar({cars, setCurrentPage}) {
-    const [query, setQuery] = useState('')
+    const query = useSelector(state => state.query)
     const getFilteredItems = (query, cars) => {
         if (!query) {
           return cars;
@@ -24,11 +23,14 @@ export default function SearchBar({cars, setCurrentPage}) {
       }
     const filtredCars = getFilteredItems(query, cars)
     const dispatch = useDispatch()
+    const setQuery = (value) => {
+        dispatch({type: "SEARCH_CARS", search: value})
+    }
     const searchCar= () => {
-        dispatch({type:"SEARCH_CAR", search: filtredCars})
+        dispatch({type:"FILTERED_CARS", filter: filtredCars})
     }
     const addCar = () => {
-        dispatch({type:"OPEN_MODAL_ADD", openAdd: true})
+        dispatch({type:"MODAL_ADD", add: true})
     }
     return (
         <div className="search-bar">
