@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-require('pg')
+const pg = require('pg')
 
 const express = require('express')
 
