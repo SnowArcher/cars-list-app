@@ -10,8 +10,8 @@ const {Sequelize} = require('sequelize')
 //         port: process.env.DB_PORT
 //     }
 // )
-
-const sequelize = new Sequelize(process.env.POSTGRES_URL, {
+module.exports = new Sequelize(
+    process.env.POSTGRES_URL, {
     dialect: 'postgres',
     dialectOptions: {
       ssl: {
@@ -19,6 +19,5 @@ const sequelize = new Sequelize(process.env.POSTGRES_URL, {
         rejectUnauthorized: false 
       }
     }
-});
-  
-module.exports = sequelize;
+  }
+);
