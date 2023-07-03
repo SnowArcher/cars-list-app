@@ -10,8 +10,8 @@ import DeleteModal from './components/DeleteModal';
 import ModalAdd from './components/ModalAdd';
 
 function App() {
-  const src = 'http://localhost:5000/api/cars'
-  //const src = ''
+  //const src = 'http://localhost:5000/api/cars'
+  const src = 'https://cars-list-app-api.vercel.app/api/cars'  //vercel
   const cars = useSelector(state => state.cars)
   const [currentPage, setCurrentPage] = useState(1)
   const postsPerPage = 6
