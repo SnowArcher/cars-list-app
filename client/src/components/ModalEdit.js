@@ -98,7 +98,7 @@ export default function ModalEdit({active, src}) {
                     value={formData.car_vin.toString()}
                     readOnly
                 />
-                <input
+                <input className='enable'
                     type="text"
                     name="car_color"
                     value={formData.car_color.toString()}
@@ -110,13 +110,13 @@ export default function ModalEdit({active, src}) {
                     value={formData.car_model_year}
                     readOnly
                 />
-                    <input
+                <input className='enable'
                     type="text"
                     name="price"
                     value={formData.price}
                     onChange={handleInputChange}
                 />
-                <input
+                <input className='enable'
                     type="text"
                     name="availability"
                     value={formData.availability}
