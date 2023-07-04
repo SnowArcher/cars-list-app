@@ -7,8 +7,11 @@ export default function Pagination({totalPosts, postsPerPage, setCurrentPage, cu
     }
     useEffect(() => {
         if (currentPage > Math.ceil(totalPosts/postsPerPage) && currentPage != 1) {
-            setFirst(firstButton - 6); 
-            setLast(lastButton - 6);
+
+            if (pages.slice(firstButton, lastButton).length == 0) {
+                setFirst(firstButton - 6); 
+                setLast(lastButton - 6);
+            }
             setCurrentPage(Math.ceil(totalPosts/postsPerPage));
         }
     }, [totalPosts])
