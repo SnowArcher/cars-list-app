@@ -25,7 +25,7 @@ function useUpdateCars(src, setRender, first, last) {
         })) {
             filtredCars.push(response);
             dispatch({ type: "FILTERED_CARS", filter: filtredCars});
-            if (filtredCars.length > 0) {
+            if (query && filtredCars.length > 0) {
                 setRender(filtredCars.slice(first, last));
             }
         }
