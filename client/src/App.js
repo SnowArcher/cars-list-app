@@ -12,6 +12,7 @@ import ModalAdd from './components/ModalAdd';
 function App() {
   //const src = 'http://localhost:5000/api/cars';
   const src = 'https://cars-list-app-api.vercel.app/api/cars';  //vercel
+  //const src = 'https://myfakeapi.com/api/cars';
   const cars = useSelector(state => state.cars);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
@@ -23,9 +24,6 @@ function App() {
   const query = useSelector(state => state.query);
   const filtredCars = useSelector(state => state.filtredCars);
   const [renderedCars, setRender] = useState([]);
-  useEffect(() => {
-    setRender(query? filtredCars.slice(firstPostIndex, lastPostIndex) : cars.slice(firstPostIndex, lastPostIndex));
-  }, [filtredCars, cars, query, firstPostIndex, lastPostIndex]);
   const dispatch = useDispatch();
   useEffect(() => {
       axios.get(src).then(data => {
@@ -34,6 +32,9 @@ function App() {
         console.log(error);
       });
   }, []);
+  useEffect(() => {
+    setRender(query? filtredCars.slice(firstPostIndex, lastPostIndex) : cars.slice(firstPostIndex, lastPostIndex));
+  }, [filtredCars, cars, query, firstPostIndex, lastPostIndex]);
   return (<>
       <SearchBar 
         cars={cars}
