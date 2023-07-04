@@ -4,15 +4,23 @@ import axios from 'axios';
 
 function useUpdateCars(formData) {
     const dispatch = useDispatch();
-    const cars = useSelector(state => state.filtredCars);
+    const filtredCars = useSelector(state => state.filtredCars);
+    const cars = useSelector(state => state.cars);
     const updateCars = () => {
+        const updatedFiltredCars = filtredCars.map(car => {
+            if (car.id === formData.id) {
+              return formData;
+            }
+            return car;
+          });
+        dispatch({ type: 'FILTERED_CARS', filter: updatedFiltredCars });
         const updatedCars = cars.map(car => {
             if (car.id === formData.id) {
               return formData;
             }
             return car;
           });
-        dispatch({ type: 'FILTERED_CARS', filter: updatedCars });
+        dispatch({ type: 'ALL_CARS', setAll: updatedCars });
     };
     return updateCars;
 }
@@ -20,7 +28,6 @@ function useUpdateCars(formData) {
 export default function ModalEdit({active, src}) {
     const dispatch = useDispatch()
     const modalContent = useSelector(state => state.modalContent)
-    console.log(modalContent)
     const [formData, setFormData] = useState({
         id: '',
         car: 'NOT FOUND',
@@ -76,25 +83,25 @@ export default function ModalEdit({active, src}) {
                 <input
                     type="text"
                     name="car"
-                    value={formData.car}
+                    value={formData.car.toString()}
                     readOnly
                 />
                 <input
                     type="text"
                     name="car_model"
-                    value={formData.car_model}
+                    value={formData.car_model.toString()}
                     readOnly
                 />
                 <input
                     type="text"
                     name="car_vin"
-                    value={formData.car_vin}
+                    value={formData.car_vin.toString()}
                     readOnly
                 />
                 <input
                     type="text"
                     name="car_color"
-                    value={formData.car_color}
+                    value={formData.car_color.toString()}
                     onChange={handleInputChange}
                 />
                 <input

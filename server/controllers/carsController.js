@@ -1,25 +1,25 @@
-const {Cars} = require('../models/models')
-const ApiError = require('../error/ApiError')
+const {Cars} = require('../models/models');
+const ApiError = require('../error/ApiError');
 
 class CarsController {
     async create(req, res, next) {
         try {
-            const {car, car_model, car_color, car_model_year, car_vin, price, availability} = req.body
-            const newCar = await Cars.create({car, car_model, car_color, car_model_year, car_vin, price, availability})
-            return res.json(newCar)
+            const {car, car_model, car_color, car_model_year, car_vin, price, availability} = req.body;
+            const newCar = await Cars.create({car, car_model, car_color, car_model_year, car_vin, price, availability});
+            return res.json(newCar);
         } catch (e) {
-             next(ApiError.badRequest(e.message))
+             next(ApiError.badRequest(e.message));
         }
     }
     async getAll(req, res) {
-        const {id} =req.query
+        const {id} =req.query;
         let car;
         if (!id) {
-            car = await Cars.findAll()
+            car = await Cars.findAll();
         } else {
-            car = await Cars.findAll({where: {id}})
+            car = await Cars.findAll({where: {id}});
         }
-        return res.json(car)
+        return res.json(car);
     }
     async change(req, res, next) {
         try {
@@ -50,6 +50,16 @@ class CarsController {
             next(ApiError.badRequest(e.message));
         }
       }
+    async getlastCreatedCar(req, res) {
+      const lastCar = await Cars.findOne({
+        order: [['createdAt', 'DESC']],
+      });
+      if (lastCar) {
+          return res.json(lastCar);
+      } else {
+          return res.status(404).json({ message: 'Car not found' });
+      }
+    }
 }
 
-module.exports = new CarsController()
+module.exports = new CarsController();

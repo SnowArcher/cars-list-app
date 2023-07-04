@@ -1,5 +1,5 @@
-const axios = require('axios')
-const {Cars} = require('./models/models')
+const axios = require('axios');
+const {Cars} = require('./models/models');
 const sequelize = require('./db');
 
 async function loadCarsData() {
@@ -36,7 +36,12 @@ async function checkIfDataExists() {
 
 async function alterSequence() {
   try {
-    await sequelize.query('ALTER SEQUENCE cars_id_seq RESTART WITH 1001;');
+    const result = await Cars.findOne({
+      attributes: [[sequelize.fn('max', sequelize.col('id')), 'maxId']],
+    });
+    const maxId = result.dataValues.maxId || 0;
+    const nextId = maxId + 1;
+    await sequelize.query(`ALTER SEQUENCE cars_id_seq RESTART WITH ${nextId};`);
     console.log('Sequence altered successfully!');
   } catch (error) {
     console.error('Error altering sequence:', error);

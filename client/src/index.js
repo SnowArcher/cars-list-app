@@ -46,7 +46,7 @@ const reducer = (state = defaultState, action) => {
       return state
   }
 }
-const store =createStore(reducer)
+const store =createStore(reducer);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

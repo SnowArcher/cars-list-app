@@ -1,5 +1,5 @@
-const sequelize = require('../db')
-const {DataTypes} = require('sequelize')
+const sequelize = require('../db');
+const {DataTypes} = require('sequelize');
 
 const Cars = sequelize.define('car', {
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
@@ -10,6 +10,6 @@ const Cars = sequelize.define('car', {
     car_vin: {type: DataTypes.STRING},
     price: {type: DataTypes.STRING},
     availability: {type: DataTypes.BOOLEAN}
-})
+});
 
-module.exports = {Cars}
+module.exports = {Cars};

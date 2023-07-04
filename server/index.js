@@ -1,38 +1,38 @@
-require('dotenv').config()
+require('dotenv').config();
 
-const pg = require('pg')
+const pg = require('pg');
 
-const express = require('express')
+const express = require('express');
 
-const sequelize = require('./db')
+const sequelize = require('./db');
 
-const models = require('./models/models')
+const models = require('./models/models');
 
-const cors = require('cors')
+const cors = require('cors');
 
-const router = require('./routes/index')
+const router = require('./routes/index');
 
-const loadData =require('./loadCarsData')
+const loadData =require('./loadCarsData');
 
-const errorHandler = require('./middleware/ErrorHandlingMiddleware')
+const errorHandler = require('./middleware/ErrorHandlingMiddleware');
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
 
-const app = express()
-app.use(cors())
-app.use(express.json())
-app.use('/api', router)
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use('/api', router);
 
-app.use(errorHandler)
+app.use(errorHandler);
 
 const start = async () => {
     try {
-        await sequelize.authenticate()
-        await sequelize.sync()
-        app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
+        await sequelize.authenticate();
+        await sequelize.sync();
+        app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
     } catch (e) {
-        console.log(e)
+        console.log(e);
     }
-}
+};
 
-start()
+start();

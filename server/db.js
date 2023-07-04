@@ -1,4 +1,4 @@
-const {Sequelize} = require('sequelize')
+const {Sequelize} = require('sequelize');
 
 // module.exports = new Sequelize(
 //     process.env.DB_NAME,
@@ -9,7 +9,7 @@ const {Sequelize} = require('sequelize')
 //         host: process.env.DB_HOST,
 //         port: process.env.DB_PORT
 //     }
-// )
+// );
 module.exports = new Sequelize(
     process.env.POSTGRES_URL, {
     dialect: 'postgres',
@@ -21,3 +21,5 @@ module.exports = new Sequelize(
     }
   }
 );
+
+//POSTGRES_URL=postgres://default:LwCkxq5IVS9T@ep-cool-sun-814630-pooler.eu-central-1.postgres.vercel-storage.com:5432/verceldb

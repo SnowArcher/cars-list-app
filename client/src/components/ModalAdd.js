@@ -1,9 +1,37 @@
-import { useDispatch, useSelector} from "react-redux"
-import { useState, useEffect} from "react";
-import axios from 'axios'
+import { useDispatch, useSelector} from "react-redux";
+import { useState} from "react";
+import axios from "axios";
 
-export default function ModalAdd({active, src, update}) {
-    const dispatch = useDispatch()
+function useUpdateCars(src) {
+    const dispatch = useDispatch();
+    let filtredCars = useSelector(state => state.filtredCars);
+    let cars = useSelector(state => state.cars);
+    const query = useSelector(state => state.query);
+    const updateCars = async () => {
+        cars = await axios.get(src).then(data => {return data.data}).catch(error => console.log(error));
+        dispatch({ type: 'ALL_CARS', setAll: cars }); 
+        const response = await axios.get(src +'/last').then(data => {return data.data}).catch(error => console.log(error));
+        if (Object.values(response).some(value => {
+            if (typeof value === 'string') {
+                return value.toLowerCase().includes(query.toLowerCase());
+            }
+            if (typeof value === 'number') {
+                return value.toString().includes(query.toLowerCase());
+            }
+            if (typeof value === 'boolean') {
+                return value.toString().includes(query.toLowerCase());
+            }
+            return false;
+        })) {
+            filtredCars.push(response);
+            dispatch({ type: 'FILTERED_CARS', filter: filtredCars});
+        }
+    };
+    return updateCars;
+}
+
+export default function ModalAdd({active, src}) {
+    const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         car: "",
         car_model: "",
@@ -15,31 +43,24 @@ export default function ModalAdd({active, src, update}) {
     });
     const closeModalAdd = () => {
         dispatch({type:"MODAL_ADD", add: false})
-    }
+    };
     const handleInputChange = (e) => {
         setFormData({
           ...formData,
           [e.target.name]: e.target.value,
         });
-      };
-    const cars = useSelector(state => state.cars)
-    useEffect(() => {
-        axios.get(src).then(data => {
-            dispatch({type: 'ALL_CARS', setAll: data.data})
-        }).catch(error => {
-          console.log(error);
-        });
-        update(cars)
-    }, [dispatch, cars, update, src])
+    };
+    const updateCars = useUpdateCars(src);
     const handleFormSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
             const response = await axios.post(src + '/add', formData);
+            updateCars();
             console.log(response.data);
         } catch (error) {
             console.error(error);
         }
-        closeModalAdd()
+        closeModalAdd();
     }
     return (
         <div className={`modal__add ${active? 'active': ''}`}>

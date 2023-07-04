@@ -1,7 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
-export default function SearchBar({cars, setCurrentPage}) {
-    const query = useSelector(state => state.query)
+export default function SearchBar({cars, setCurrentPage, query}) {
     const getFilteredItems = (query, cars) => {
         if (!query) {
           return cars;
@@ -42,8 +41,8 @@ export default function SearchBar({cars, setCurrentPage}) {
                     onChange={e => setQuery(e.target.value)}
                     onKeyDown={e => {
                         if (e.key === 'Enter') {
-                          searchCar()
-                          setCurrentPage(1)
+                            searchCar()
+                            setCurrentPage(1)
                         }
                       }}
                 />

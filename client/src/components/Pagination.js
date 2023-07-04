@@ -1,19 +1,19 @@
-import { useState } from "react"
+import { useState } from "react";
 
 export default function Pagination({totalPosts, postsPerPage, setCurrentPage, currentPage}) {
-    const pages = []
+    const pages = [];
     for(let i = 1; i <= Math.ceil(totalPosts/postsPerPage); i++) {
-        pages.push(i)
+        pages.push(i);
     }
-    const [firstButton, setFirst] = useState(0)
-    const [lastButton, setLast] = useState(6)
+    const [firstButton, setFirst] = useState(0);
+    const [lastButton, setLast] = useState(6);
     return (
         <div className="pagination">
             <button className={`prevbtn ${lastButton <= 6? '' : 'active'}`} onClick={() => 
                     {
-                        setFirst(firstButton - 6) 
-                        setLast(lastButton - 6)
-                        setCurrentPage(pages[lastButton - 7])
+                        setFirst(firstButton - 6); 
+                        setLast(lastButton - 6);
+                        setCurrentPage(pages[lastButton - 7]);
                     }
                 }>prev</button>
             {
@@ -23,9 +23,9 @@ export default function Pagination({totalPosts, postsPerPage, setCurrentPage, cu
             }
             <button className={`nextbtn ${firstButton >= pages.length - 6? '' : 'active'}`} onClick={() => 
                     {
-                        setFirst(firstButton + 6) 
-                        setLast(lastButton + 6)
-                        setCurrentPage(pages[firstButton + 6])
+                        setFirst(firstButton + 6); 
+                        setLast(lastButton + 6);
+                        setCurrentPage(pages[firstButton + 6]);
                     }
                 }>next</button>
         </div>

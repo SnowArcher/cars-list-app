@@ -3,10 +3,17 @@ import axios from 'axios'
 
 function useUpdateCars(id) {
     const dispatch = useDispatch();
-    const cars = useSelector(state => state.filtredCars);
+    const filtredCars = useSelector(state => state.filtredCars);
+    const cars = useSelector(state => state.cars);
     const updateCars = () => {
-      const updatedCars = cars.filter(car => car.id !== id);
-      dispatch({ type: 'FILTERED_CARS', filter: updatedCars });
+        if (filtredCars.length > 0) {
+            const updateFiltredCars = filtredCars.filter(car => car.id !== id);
+            dispatch({ type: 'FILTERED_CARS', filter: updateFiltredCars});
+        }
+        if (cars.length > 0) {
+            const updatedCars = cars.filter(car => car.id !== id);
+            dispatch({ type: 'ALL_CARS', setAll: updatedCars });
+        }
     };
     return updateCars;
 }

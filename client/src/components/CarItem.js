@@ -1,10 +1,10 @@
-import { useState, useRef, useEffect} from "react"
-import {useDispatch} from 'react-redux'
+import { useState, useRef, useEffect} from "react";
+import {useDispatch} from 'react-redux';
 
 export default function CarItem({id, company, model, vin, color, year, price, availability}) {
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(false);
     const menuRef = useRef();
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     const changeCar = (id, company, model, vin, color, year, price, availability) => {
         dispatch({type:"CHANGE_CAR", change: {
             id: id,
@@ -15,15 +15,15 @@ export default function CarItem({id, company, model, vin, color, year, price, av
             car_vin: vin,
             price: price,
             availability: availability,
-        }})
-    }
+        }});
+    };
     const openModalEdit = () => {
-        dispatch({type:"MODAL_EDIT", edit: true})
-    }
+        dispatch({type:"MODAL_EDIT", edit: true});
+    };
     const openModalDelete = (id) => {
-        dispatch({type:"MODAL_DELETE", delete: true})
-        dispatch({type:"DELETE_ID", id: id})
-    }
+        dispatch({type:"MODAL_DELETE", delete: true});
+        dispatch({type:"DELETE_ID", id: id});
+    };
     useEffect(() => {
         const handler = (e) => {
             if(!menuRef.current.contains(e.target)) {
