@@ -5,18 +5,23 @@ export default function Pagination({totalPosts, postsPerPage, setCurrentPage, cu
     for(let i = 1; i <= Math.ceil(totalPosts/postsPerPage); i++) {
         pages.push(i);
     }
+    const [firstButton, setFirst] = useState(0);
+    const [lastButton, setLast] = useState(6);
     useEffect(() => {
-        if (currentPage > Math.ceil(totalPosts/postsPerPage) && currentPage != 1) {
+        if (currentPage > Math.ceil(totalPosts/postsPerPage) && currentPage !== 1) {
 
-            if (pages.slice(firstButton, lastButton).length == 0) {
+            if (pages.slice(firstButton, lastButton).length === 0) {
                 setFirst(firstButton - 6); 
                 setLast(lastButton - 6);
             }
             setCurrentPage(Math.ceil(totalPosts/postsPerPage));
         }
-    }, [totalPosts])
-    const [firstButton, setFirst] = useState(0);
-    const [lastButton, setLast] = useState(6);
+        if (currentPage < firstButton || currentPage > lastButton) {
+            setCurrentPage(1);
+            setFirst(0);
+            setLast(6)
+        }
+    }, [totalPosts, currentPage])
     return (
         <div className="pagination">
             <button className={`prevbtn ${lastButton <= 6? '' : 'active'}`} onClick={() => 

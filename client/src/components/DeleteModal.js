@@ -1,31 +1,33 @@
 import { useDispatch, useSelector} from "react-redux"
 import axios from 'axios'
 
-function useUpdateCars(id) {
+function useUpdateCars(id, setRender, first, last) {
     const dispatch = useDispatch();
     const filtredCars = useSelector(state => state.filtredCars);
     const cars = useSelector(state => state.cars);
+    const query = useSelector(state => state.query);
     const updateCars = () => {
-        if (filtredCars.length > 0) {
-            const updateFiltredCars = filtredCars.filter(car => car.id !== id);
-            dispatch({ type: 'FILTERED_CARS', filter: updateFiltredCars});
+        if (query && filtredCars.length > 0) {
+            const updatedFiltredCars = filtredCars.filter(car => car.id !== id);
+            dispatch({ type: "FILTERED_CARS", filter: updatedFiltredCars});
+            setRender(updatedFiltredCars.slice(first, last));
         }
         if (cars.length > 0) {
             const updatedCars = cars.filter(car => car.id !== id);
-            dispatch({ type: 'ALL_CARS', setAll: updatedCars });
+            dispatch({ type: "ALL_CARS", setAll: updatedCars });
         }
     };
     return updateCars;
 }
 
-export default function DeleteModal({active, src}) {
-    const id = useSelector(state => state.deleteId)
+export default function DeleteModal({active, src, setRender, first, last}) {
+    const id = useSelector(state => state.deleteId);
     const dispatch = useDispatch();
     const closeModalDelete = () => {
-        dispatch({type: "MODAL_DELETE", delete: false})
-        dispatch({type: "DELETE_ID", id: null})
+        dispatch({type: "MODAL_DELETE", delete: false});
+        dispatch({type: "DELETE_ID", id: null});
     }
-    const updateCars = useUpdateCars(id);
+    const updateCars = useUpdateCars(id, setRender, first, last);
     return (
         <div className={`modal__delete ${active? 'active': ''}`}>
             <div className="modal__delete_content">
@@ -33,12 +35,12 @@ export default function DeleteModal({active, src}) {
                 <button id="firstbtn" onClick={async () => {
                     try {
                         const response = await axios.post(src + '/delete?id=' + id);
-                        updateCars()
+                        updateCars();
                         console.log(response.data);
                     } catch (error) {
-                    console.error(error);
+                        console.error(error);
                     }
-                    closeModalDelete()
+                    closeModalDelete();
                 }}>Yes</button>
                 <button id="secondbtn" onClick={() => {closeModalDelete()}}>No</button>
             </div>

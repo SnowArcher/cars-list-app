@@ -2,18 +2,24 @@ import {useDispatch, useSelector} from 'react-redux';
 import { useState , useEffect} from 'react';
 import axios from 'axios';
 
-function useUpdateCars(formData) {
+function useUpdateCars(formData, setRender, first, last) {
     const dispatch = useDispatch();
     const filtredCars = useSelector(state => state.filtredCars);
     const cars = useSelector(state => state.cars);
+    const query = useSelector(state => state.query);
     const updateCars = () => {
-        const updatedFiltredCars = filtredCars.map(car => {
-            if (car.id === formData.id) {
-              return formData;
+        if (query) {
+            const updatedFiltredCars = filtredCars.map(car => {
+                if (car.id === formData.id) {
+                  return formData;
+                }
+                return car;
+              });
+            dispatch({ type: "FILTERED_CARS", filter: updatedFiltredCars });
+            if (updatedFiltredCars.length > 0) {
+                setRender(updatedFiltredCars.slice(first, last));
             }
-            return car;
-          });
-        dispatch({ type: 'FILTERED_CARS', filter: updatedFiltredCars });
+        }
         const updatedCars = cars.map(car => {
             if (car.id === formData.id) {
               return formData;
@@ -25,7 +31,7 @@ function useUpdateCars(formData) {
     return updateCars;
 }
 
-export default function ModalEdit({active, src}) {
+export default function ModalEdit({active, src, setRender, first, last}) {
     const dispatch = useDispatch()
     const modalContent = useSelector(state => state.modalContent)
     const [formData, setFormData] = useState({
@@ -50,7 +56,7 @@ export default function ModalEdit({active, src}) {
           availability: modalContent.availability,
         });
       }, [modalContent]);
-    const updateCars = useUpdateCars(formData);
+    const updateCars = useUpdateCars(formData, setRender, first, last);
     const updateModalEdit = (name, value) => {
         dispatch({type: "CHANGE_CAR", change: {...modalContent, [name]: value}})
     }

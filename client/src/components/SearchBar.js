@@ -1,6 +1,9 @@
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector} from "react-redux";
 
-export default function SearchBar({cars, setCurrentPage, query}) {
+export default function SearchBar({setCurrentPage, query}) {
+    const [filtredCars, setFiltredCars] = useState([]);
+    const cars = useSelector(state => state.cars);
     const getFilteredItems = (query, cars) => {
         if (!query) {
           return cars;
@@ -20,16 +23,20 @@ export default function SearchBar({cars, setCurrentPage, query}) {
             });
           })
       }
-    const filtredCars = getFilteredItems(query, cars)
+    useEffect(() => {
+        setFiltredCars(getFilteredItems(query, cars));
+        searchCar();
+        setCurrentPage(1);
+    }, [query])
     const dispatch = useDispatch()
     const setQuery = (value) => {
-        dispatch({type: "SEARCH_CARS", search: value})
+        dispatch({type: "SEARCH_CARS", search: value});
     }
     const searchCar= () => {
-        dispatch({type:"FILTERED_CARS", filter: filtredCars})
+        dispatch({type:"FILTERED_CARS", filter: filtredCars});
     }
     const addCar = () => {
-        dispatch({type:"MODAL_ADD", add: true})
+        dispatch({type:"MODAL_ADD", add: true});
     }
     return (
         <div className="search-bar">
@@ -38,17 +45,18 @@ export default function SearchBar({cars, setCurrentPage, query}) {
                 <input 
                     type="text" 
                     placeholder="Search Car" 
+                    value={query}
                     onChange={e => setQuery(e.target.value)}
                     onKeyDown={e => {
                         if (e.key === 'Enter') {
-                            searchCar()
-                            setCurrentPage(1)
+                            searchCar();
+                            setCurrentPage(1);
                         }
                       }}
                 />
                 <img src="../img/search-icon.svg" alt="search-icon" onClick={() => {
-                        searchCar()
-                        setCurrentPage(1)
+                        searchCar();
+                        setCurrentPage(1);
                     }
                 }/>
             </div>

@@ -18,7 +18,7 @@ const defaultState = {
     car: "NOT FOUND",
     car_model: "",
     car_color: "",
-    car_model_year: null,
+    car_model_year: 0,
     car_vin: "",
     price: "$0",
     availability: false

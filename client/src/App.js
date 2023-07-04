@@ -10,6 +10,7 @@ import DeleteModal from './components/DeleteModal';
 import ModalAdd from './components/ModalAdd';
 
 function App() {
+  
   //const src = 'http://localhost:5000/api/cars';
   const src = 'https://cars-list-app-api.vercel.app/api/cars';  //vercel
   //const src = 'https://myfakeapi.com/api/cars';
@@ -33,11 +34,10 @@ function App() {
       });
   }, []);
   useEffect(() => {
-    setRender(query? filtredCars.slice(firstPostIndex, lastPostIndex) : cars.slice(firstPostIndex, lastPostIndex));
-  }, [filtredCars, cars, query, firstPostIndex, lastPostIndex]);
+    setRender((query && filtredCars.length > 0)? filtredCars.slice(firstPostIndex, lastPostIndex) : cars.slice(firstPostIndex, lastPostIndex));
+  }, [cars, query, filtredCars, firstPostIndex, lastPostIndex]);
   return (<>
       <SearchBar 
-        cars={cars}
         query={query}
         setCurrentPage={setCurrentPage}
       />
@@ -61,13 +61,22 @@ function App() {
       </div>
       <ModalEdit 
         active={modalEdit}
+        first={firstPostIndex}
+        last={lastPostIndex}
+        setRender={setRender}
         src={src}/>
       <DeleteModal 
         active={modalDelete}
+        first={firstPostIndex}
+        last={lastPostIndex}
+        setRender={setRender}
         src={src}
         />
       <ModalAdd 
         active={modalAdd}
+        first={firstPostIndex}
+        last={lastPostIndex}
+        setRender={setRender}
         src={src}/>
       <Pagination 
         totalPosts={query? filtredCars.length : cars.length} 

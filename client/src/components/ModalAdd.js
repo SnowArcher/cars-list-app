@@ -2,14 +2,14 @@ import { useDispatch, useSelector} from "react-redux";
 import { useState} from "react";
 import axios from "axios";
 
-function useUpdateCars(src) {
+function useUpdateCars(src, setRender, first, last) {
     const dispatch = useDispatch();
     let filtredCars = useSelector(state => state.filtredCars);
     let cars = useSelector(state => state.cars);
     const query = useSelector(state => state.query);
     const updateCars = async () => {
         cars = await axios.get(src).then(data => {return data.data}).catch(error => console.log(error));
-        dispatch({ type: 'ALL_CARS', setAll: cars }); 
+        dispatch({ type: "ALL_CARS", setAll: cars }); 
         const response = await axios.get(src +'/last').then(data => {return data.data}).catch(error => console.log(error));
         if (Object.values(response).some(value => {
             if (typeof value === 'string') {
@@ -24,19 +24,22 @@ function useUpdateCars(src) {
             return false;
         })) {
             filtredCars.push(response);
-            dispatch({ type: 'FILTERED_CARS', filter: filtredCars});
+            dispatch({ type: "FILTERED_CARS", filter: filtredCars});
+            if (filtredCars.length > 0) {
+                setRender(filtredCars.slice(first, last));
+            }
         }
     };
     return updateCars;
 }
 
-export default function ModalAdd({active, src}) {
+export default function ModalAdd({active, src, setRender, first, last}) {
     const dispatch = useDispatch();
     const [formData, setFormData] = useState({
         car: "",
         car_model: "",
         car_color: "",
-        car_model_year: null,
+        car_model_year: 0,
         car_vin: "",
         price: "",
         availability: false,
@@ -50,7 +53,7 @@ export default function ModalAdd({active, src}) {
           [e.target.name]: e.target.value,
         });
     };
-    const updateCars = useUpdateCars(src);
+    const updateCars = useUpdateCars(src, setRender, first, last);
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
