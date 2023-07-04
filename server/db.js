@@ -21,5 +21,3 @@ module.exports = new Sequelize(
     }
   }
 );
-
-//POSTGRES_URL=postgres://default:LwCkxq5IVS9T@ep-cool-sun-814630-pooler.eu-central-1.postgres.vercel-storage.com:5432/verceldb
