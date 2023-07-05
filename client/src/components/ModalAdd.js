@@ -115,12 +115,12 @@ export default function ModalAdd({active, src, setRender, first, last}) {
                             value={formData.price}
                             onChange={handleInputChange}
                         />
-                        <input
-                            type="text"
-                            name="availability"
+                        <select name="availability"
                             value={formData.availability}
-                            onChange={handleInputChange}
-                        />
+                            onChange={handleInputChange}>
+                            <option value={true}>true</option>
+                            <option value={false}>false</option>
+                        </select>
                         <button type="submit">Add Car</button>
                     </form>
                 </div>

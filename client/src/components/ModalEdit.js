@@ -35,12 +35,12 @@ export default function ModalEdit({active, src, setRender, first, last}) {
     const dispatch = useDispatch()
     const modalContent = useSelector(state => state.modalContent)
     const [formData, setFormData] = useState({
-        id: '',
+        id: 0,
         car: 'NOT FOUND',
-        car_model: '',
-        car_color: '',
+        car_model: 'NOT FOUND',
+        car_color: 'NOT FOUND',
         car_model_year: 0,
-        car_vin: '',
+        car_vin: 'NOT FOUND',
         price: '$0',
         availability: false,
     });
@@ -66,14 +66,12 @@ export default function ModalEdit({active, src, setRender, first, last}) {
     const handleInputChange = (e) => {
         let value = e.target.value
         const name = e.target.name
-        if (name === 'availability') {
-            value = value === 'true'? true : false
-        }
         updateModalEdit(name, value)
     }
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         try {
+            console.log(formData);
             const response = await axios.post(src + '/change', formData);
             updateCars(formData)
             console.log(response.data);
@@ -122,12 +120,12 @@ export default function ModalEdit({active, src, setRender, first, last}) {
                     value={formData.price}
                     onChange={handleInputChange}
                 />
-                <input className='enable'
-                    type="text"
-                    name="availability"
+                <select name="availability"
                     value={formData.availability}
-                    onChange={handleInputChange}
-                />
+                    onChange={handleInputChange}>
+                    <option value={true}>true</option>
+                    <option value={false}>false</option>
+                </select>
                 <button type="submit">Change</button>
                 <img src="../img/cross.svg" alt="cross" onClick={() => {closeModalEdit()}}/>
             </form>

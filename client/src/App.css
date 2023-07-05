@@ -306,6 +306,17 @@ body {
   -webkit-box-shadow: 0 0 10px 5px rgb(0, 0, 0);
           box-shadow: 0 0 10px 5px rgb(0, 0, 0);
 }
+.modal__content select {
+  border: 1px solid gray;
+  width: 100%;
+  padding: 2px 10px;
+  margin-top: 10px;
+  font-size: 1rem;
+}
+.modal__content select:focus, .modal__content select:hover {
+  -webkit-box-shadow: 0 0 10px 5px rgb(0, 0, 0);
+          box-shadow: 0 0 10px 5px rgb(0, 0, 0);
+}
 .modal__content img {
   height: 40px;
   width: 40px;
@@ -416,7 +427,7 @@ body {
 }
 .modal__add_content .add__item form input {
   width: 100%;
-  padding: 2px 0;
+  padding: 2px 10px;
   border: 1px solid gray;
   margin-bottom: 10px;
 }
@@ -424,9 +435,19 @@ body {
   -webkit-box-shadow: 0 0 10px 5px rgb(0, 0, 0);
           box-shadow: 0 0 10px 5px rgb(0, 0, 0);
 }
+.modal__add_content .add__item form select {
+  border: 1px solid gray;
+  width: 100%;
+  padding: 2px 10px;
+  font-size: 1rem;
+}
+.modal__add_content .add__item form select:focus, .modal__add_content .add__item form select:hover {
+  -webkit-box-shadow: 0 0 10px 5px rgb(0, 0, 0);
+          box-shadow: 0 0 10px 5px rgb(0, 0, 0);
+}
 .modal__add_content .add__item form button {
   width: 40%;
-  margin-top: 10px;
+  margin-top: 20px;
   border: 2px solid black;
   font-weight: 700;
   padding: 5px 0;
