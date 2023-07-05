@@ -64,16 +64,18 @@ export default function ModalEdit({active, src, setRender, first, last}) {
         dispatch({type:"MODAL_EDIT", edit: false})
     }
     const handleInputChange = (e) => {
-        let value = e.target.value
-        const name = e.target.name
-        updateModalEdit(name, value)
+        let value = e.target.value;
+        const name = e.target.name;
+        if (name === 'price' && !value.startsWith("$")) {
+            value = '$' + value;
+        }
+        updateModalEdit(name, value);
     }
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         try {
-            console.log(formData);
             const response = await axios.post(src + '/change', formData);
-            updateCars(formData)
+            updateCars(formData);
             console.log(response.data);
         } catch (error) {
         console.error(error);

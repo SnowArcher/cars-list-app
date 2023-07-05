@@ -48,7 +48,10 @@ export default function ModalAdd({active, src, setRender, first, last}) {
         dispatch({type:"MODAL_ADD", add: false})
     };
     const handleInputChange = (e) => {
-        setFormData({
+        setFormData((e.target.name === 'price' && !e.target.value.startsWith('$'))? {
+            ...formData,
+            [e.target.name]: '$' + e.target.value,
+          }:{
           ...formData,
           [e.target.name]: e.target.value,
         });
